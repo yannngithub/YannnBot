@@ -745,14 +745,9 @@ switch (command) {
           fs.unlinkSync(media)
           })
           .on('end', () => {
-          _out = getRandom('.webp')
-          spawn('webpmux', ['-set','exif','./mediadata/data.exif', out, '-o', _out])
-          .on('exit', () => {
-          zee.sendMessage(from, fs.readFileSync(_out),'stickerMessage', { quoted: mek })
+          zee.sendMessage(from, fs.readFileSync(out),'stickerMessage', { quoted: mek })
           fs.unlinkSync(out)
-          fs.unlinkSync(_out)
           fs.unlinkSync(media)
-          })
           })
           .addOutputOptions([`-vcodec`,`libwebp`,`-vf`,`scale='min(320,iw)':min'(320,ih)':force_original_aspect_ratio=decrease,fps=15, pad=320:320:-1:-1:color=white@0.0, split [a][b]; [a] palettegen=reserve_transparent=on:transparency_color=ffffff [p]; [b][p] paletteuse`])
           .toFormat('webp')
@@ -1385,39 +1380,22 @@ case 'leave':
           })
 		  })
 		  break
-    case "twitter":
-           if (!isUrl(args[0]) && !args[0].includes("twitter.com"))
-           return reply(mess.error.url);
-           if (!v) return fakegroup("Linknya?");
-           ten = args[0];
-           var res = await hx.twitter(`${ten}`);
-           ren = `${g.HD}`;
-           sendMediaURL(from, ren, "Nih kak video nya!!");
-           break;
-                case 'fb':
-                case 'facebook':
-                    if (args.length == 0) return reply(`*Contoh:* .fb https://www.facebook.com/groups/526925218448628/permalink/591475845326898/`)
-                    link = args[0]
-                    anu = await fetchJson(`https://docs-jojo.herokuapp.com/api/fb?url=${link}`)
-                    anu1 = await getBuffer(anu.result[0].download)
-                    zee.sendMessage(from, anu1, video, {mimetype: 'video/mp4', quoted:mek })
-                     break
-                    case 'fb2':
-                    case 'facebook2':
+              case 'twit':
+                  case 'twitter':
+                   if (args.length == 0) return reply(`*Contoh:* .twitter https://twitter.com/dekai23/status/1488600754256551941`)
+                   link = args[0]
+                   anu = await fetchJson(`https://api.dapuhy.xyz/api/socialmedia/twitter?url=${link}&apikey=alvianto`)
+                   anu = anu.download
+                   anu1 = await getBuffer(anu.hd)
+                   zee.sendMessage(from, anu1, video, {mimetype: 'video/mp4', quoted: mek })
+                   break
+                    case 'fb':
+                    case 'facebook':
                      if (args.length == 0) return reply(`*Contoh:* .fb2 https://www.facebook.com/groups/526925218448628/permalink/591475845326898/`)
                      link = args[0]
                      anu = await fetchJson(`https://api.neoxr.eu.org/api/fb?url=${link}&apikey=yourkey`)
-                     anu1 = await getBuffer(anu.data[1].url)
-                     zee.sendMessage(from, anu1, video, {mimetype: 'video/mp4', quoted:mek })
-                     break
-                    case 'fb3':
-                    case 'facebook3':
-                    if (args.length == 0) return reply(`*Contoh:* .fb3 https://www.facebook.com/groups/526925218448628/permalink/591475845326898/`)
-                    link = args[0]
-                    anu = await fetchJson(`https://api.dapuhy.xyz/api/socialmedia/snapsave?url=${link}&apikey=alvianto`)
-                    anu = anu.result
-                    anu1 = await getBuffer(anu.preview)
-                    zee.sendMessage(from, anu1, video, {mimetype: 'video/mp4', quoted:mek })
+                        anu1 = await getBuffer(anu.data[0].url)
+                        zee.sendMessage(from, anu1, video, { quoted:mek })
                      break
      case "instagram":
       case "ig":
@@ -1569,6 +1547,94 @@ case 'leave':
           zee.sendMessage(from, gambar, image, { quoted: mek })
           })
           break
+          case 'tulis':
+if (args.length < 1) return reply('Yang mau di tulis apaan?')
+teks = args.join(' ')
+reply(mess.wait)
+nulis = encodeURIComponent(teks)
+res = await axios.get(`https://dt-04.herokuapp.com/nulis?text=${nulis}`)
+if (res.data.error) return reply(`Error`)
+buff = Buffer.from(res.data.result.split(',')[1], 'base64')
+zee.sendMessage(from, buff, image, {quoted: mek, caption: `Selesai`}).catch(e => {
+  return reply('_[ ! ] Error Gagal Dalam Mendownload Dan Mengirim File_')
+})
+break
+          case 'gempa':
+            get_result = await fetchJson(`https://zenzapi.xyz/api/bmkg/gempa?apikey=abc731987d36`)
+            get_result = get_result.result
+            ini_txt = `Tanggal : ${get_result.tanggal}\n`
+            ini_txt += `Jam : ${get_result.jam}\n`
+            ini_txt += `Magnitudo : ${get_result.magnitude}\n`
+            ini_txt += `Kedalaman : ${get_result.kedalaman}\n`
+            ini_txt += `Koordinat : ${get_result.coordinates}\n`
+            ini_txt += `Lintang : ${get_result.lintang}\n`
+            ini_txt += `Bujur : ${get_result.bujur}\n`
+            ini_txt += `Lokasi Gempa : ${get_result.wilayah}\n`
+            ini_txt += `Dirasakan : ${get_result.dirasakan}\n\n`
+            ini_txt += `Data ini diambil dari *https://www.bmkg.go.id/gempabumi/gempabumi-terkini.bmkg*`
+            anu = await getBuffer(get_result.shakemap)
+            zee.sendMessage(from, anu, image, {quoted: mek, caption: ini_txt })
+            break
+            case 'gempaterbaru':
+                anu = await fetchJson(`https://data.bmkg.go.id/DataMKG/TEWS/gempaterkini.json`)
+                anu = anu.Infogempa
+                anu1 = anu.gempa
+                ini_txt = ""
+                ini_txt +=`*MENAMPILKAN 15 DATA GEMPA TERBARU*\n\n`
+                ini_txt +=`Data ini diambil dari *https://www.bmkg.go.id/gempabumi/gempabumi-terkini.bmkg*\n\n`
+           for (var x of anu1) {
+               ini_txt += `Tanggal : ${x.Tanggal}\n`
+               ini_txt += `Jam : ${x.Jam}\n`
+               ini_txt += `Magnitudo : ${x.Magnitude}\n`
+               ini_txt += `Kedalaman : ${x.Kedalaman}\n`
+               ini_txt += `Koordinat : ${x.Coordinates}\n`
+               ini_txt += `Lintang : ${x.Lintang}\n`
+               ini_txt += `Bujur : ${x.Bujur}\n`
+               ini_txt += `Lokasi Gempa : ${x.Wilayah}\n`
+               ini_txt += `Potensi : ${x.Potensi}\n\n`}
+           reply(ini_txt)
+           break
+            case 'corona':
+            case 'covid':
+            get_result = await fetchJson(`https://restu-restapi.herokuapp.com/covid?country=indonesia`)
+            get_result = get_result.result
+            ini_txt = `Laporan COVID Update pada : *${get_result.diperbarui}*\n\n`
+            ini_txt += `Positif : ${get_result.positif}\n`
+            ini_txt += `Sembuh : ${get_result.sembuh}\n`
+            ini_txt += `Meninggal : ${get_result.meninggal}\n\n`
+            ini_txt += 'Data Ini Diambil Dari *https://covid19.go.id/peta-sebaran*'
+            reply( ini_txt )
+            break
+            case 'cuaca':
+            if (args.length == 0) return reply(`*Contoh:* .cuaca Yogyakarta`)
+            query = args.join(" ")
+            anu = await fetchJson(`https://api.xteam.xyz/cuaca?kota=${query}&APIKEY=a781ec5cc8d2e966`)
+            anu = anu.message
+            txt = `*Kota* : ${anu.kota}\n`
+            txt += `*Hari* : ${anu.hari}\n`
+            txt += `*Cuaca* : ${anu.cuaca}\n`
+            txt += `*Deskripsi* : ${anu.deskripsi}\n`
+            txt += `*Suhu* : ${anu.suhu}\n`
+            txt += `*Kelembapan* : ${anu.kelembapan}\n`
+            txt += `*Angin* : ${anu.angin}\n`
+            txt += `*Pressure* : ${anu.pressure}`
+            reply( txt )
+            break
+            case 'jadwalsholat':
+            if (args.length == 0) return reply(`*Contoh:* .jadwalsholat Yogyakarta`)
+            query = args.join(" ")
+            anu = await fetchJson(`https://api.zeks.me/api/jadwalsholat?apikey=alvianto17&daerah=${query}`)
+            anu = anu.data
+            anu1 = anu.object
+            ini_txt = `Shubuh : *${anu1.Shubuh}*\n`
+            ini_txt += `Dzuhur : *${anu1.Dzuhur}*\n`
+            ini_txt += `Ashar : *${anu1.Ashr}*\n`
+            ini_txt += `Maghrib : *${anu1.Maghrib}*\n`
+            ini_txt += `Isya : *${anu1.Isya}*\n\n\n`
+            ini_txt += `*List Daerah :*
+Ambarawa, Ambon, Amlapura, Amuntai, Argamakmur, ͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏Atambua, Babo, Bagan Siapiapi, Bajawa, Balige, Balik Papan, Banda Aceh, Bandarlampung, Bandung, Bangkalan, Bangkinang, Bangko, Bangli, Banjar, Banjar Baru, Banjarmasin, Banjarnegara, Bantaeng, Banten, Bantul, Banyuwangi, Barabai, Barito, Barru, Batam, Batang, Batu, Baturaja, Batusangkar, Baubau, Bekasi, Bengkalis, Bengkulu, Benteng, Biak, Bima, Binjai, Bireuen, Bitung, Blitar, Blora, Bogor, Bojonegoro, Bondowoso, Bontang, Boyolali, Brebes, Bukit Tinggi, Bulukumba, Buntok, Cepu, Ciamis, Cianjur, Cibinong, Cilacap, Cilegon, Cimahi, Cirebon, Curup, Demak, Denpasar, Depok, Dili, Dompu, Donggala, Dumai, Ende, Enggano, Enrekang, Fakfak, Garut, Gianyar, Gombong, Gorontalo, Gresik, Gunung Sitoli, Indramayu, Jakarta, Jambi, Jayapura, Jember, Jeneponto, Jepara, Jombang, Kabanjahe, Kalabahi, Kalianda, Kandangan, Karanganyar, Karawang, Kasungan, Kayuagung, Kebumen, Kediri, Kefamenanu, Kendal, Kendari, Kertosono, Ketapang, Kisaran, Klaten, Kolaka, Kota Baru Pulau Laut, Kota Bumi, Kota Jantho, Kota Mobagu, Kuala Kapuas, Kuala Kurun, Kuala Pembuang, Kuala Tungkal, Kudus, Kuningan, Kupang, Kutacane, Kutoarjo, Labuhan, Lahat, Lamongan, Langsa, Larantuka, Lawang, Lhoseumawe, Limboto, Lubuk Basung, Lubuk Linggau, Lubuk Pakam, Lubuk Sikaping, Lumajang, Luwuk, Madiun, Magelang, Magetan, Majalengka, Majene, Makale, Makassar, Malang, Mamuju, Manna, Manokwari, Marabahan, Maros, Martapura, Masohi, Mataram, Maumere, Medan, Mempawah, Menado, Mentok, Merauke, Metro, Meulaboh, Mojokerto, Muara Bulian, Muara Bungo, Muara Enim, Muara Teweh, Muaro Sijunjung, Muntilan, Nabire, Negara, Nganjuk, Ngawi, Nunukan, Pacitan, Padang, Padang Panjang, Padang Sidempuan, Pagaralam, Painan, Palangkaraya, Palembang, Palopo, Palu, Pamekasan, Pandeglang, Pangkajene, Pangkajene Sidenreng, Pangkalanbun, Pangkalpinang, Panyabungan, Pare, Parepare, Pariaman, Pasuruan, Pati, Payakumbuh, Pekalongan, Pekan Baru, Pemalang, Pematangsiantar, Pendopo, Pinrang, Pleihari, Polewali, Pondok Gede, Ponorogo, Pontianak, Poso, Prabumulih, Praya, Probolinggo, Purbalingga, Purukcahu, Purwakarta, Purwodadigrobogan, Purwokerto, Purworejo, Putussibau, Raha, Rangkasbitung, Rantau, Rantauprapat, Rantepao, Rembang, Rengat, Ruteng, Sabang, Salatiga, Samarinda, Sampang, Sampit, Sanggau, Sawahlunto, Sekayu, Selong, Semarang, Sengkang, Serang, Serui, Sibolga, Sidikalang, Sidoarjo, Sigli, Singaparna, Singaraja, Singkawang, Sinjai, Sintang, Situbondo, Slawi, Sleman, Soasiu, Soe, Solo, Solok, Soreang, Sorong, Sragen, Stabat, Subang, Sukabumi, Sukoharjo, Sumbawa Besar, Sumedang, Sumenep, Sungai Liat, Sungai Penuh, Sungguminasa, Surabaya, Surakarta, Tabanan, Tahuna, Takalar, Takengon, Tamiang Layang, Tanah Grogot, Tangerang, Tanjung Balai, Tanjung Enim, Tanjung Pandan, Tanjung Pinang, Tanjung Redep, Tanjung Selor, Tapak Tuan, Tarakan, Tarutung, Tasikmalaya, Tebing Tinggi, Tegal, Temanggung, Tembilahan, Tenggarong, Ternate, Tolitoli, Tondano, Trenggalek, Tual, Tuban, Tulung Agung, Ujung Berung, Ungaran, Waikabubak, Waingapu, Wamena, Watampone, Watansoppeng, Wates, Wonogiri, Wonosari, Wonosobo, Yogyakarta`
+            reply( ini_txt )
+            break
 case 'donasi':
       donate = `*DONASI KAK BUAT BELI SERVER BOT NYA AGAR BISA AKTIF 24/7*\n
 *GOPAY*
@@ -1588,34 +1654,26 @@ https://saweria.co/Alvianto17`
 //++Menunya          
     case 'allmenu': case 'm2':
           let q = 0
-          pp = monospace(` ❏「 OWNER 」	          
+          pp = monospace(`❏「 OWNER 」	          
 0${q+=1}.ping
 0${q+=1}.self
 0${q+=1}.public
 0${q+=1}.runtime
 0${q+=1}.setthumb
 
- ❏「 TOOLS 」	
+❏「 TOOLS 」	
 0${q+=1}.jadibot
 0${q+=1}.stopjadibot
 0${q+=1}.listjadibot
 
- ❏「 VVIBU 」
-0${q+=1}.loli
-${q+=1}.milf
-${q+=1}.waifu
-${q+=1}.husbu
-${q+=1}.wallml
-${q+=1}.cosplay
-
- ❏「 SEARCH 」
-${q+=1}.ssweb link 
+❏「 SEARCH 」
+0${q+=1}.ssweb link 
 ${q+=1}.lirik lirik lagu
-${q+=1}.gimage	query
+${q+=1}.gimage query
 ${q+=1}.pinterest query
 ${q+=1}.ytsearch query
 
- ❏「 DOWLOAD 」	
+❏「 DOWLOAD 」	
 ${q+=1}.play query
 ${q+=1}.tiktok link
 ${q+=1}.ytmp3 link
@@ -1625,24 +1683,22 @@ ${q+=1}.facebook link
 ${q+=1}.Instagram link
 ${q+=1}.mediafire link
 
- ❏「 MEDIA 」	
+❏「 INFORMASI 」
+${q+=1}.gempa
+${q+=1}.gempaterbaru
+${q+=1}.cuaca kotamu
+${q+=1}.corona
+${q+=1}.jadwalsholat kotamu
+
+
+❏「 MEDIA 」	
 ${q+=1}.attp text
 ${q+=1}.tourl
 ${q+=1}.toimg reply
 ${q+=1}.semoji emot
 ${q+=1}.sticker reply
 
- ❏「 UPSWBOT 」
-${q+=1}.upswgift
-${q+=1}.upswteks
-${q+=1}.upswvideo
-${q+=1}.upswaudio
-${q+=1}.upswvoice
-${q+=1}.upswlokasi
-${q+=1}.upswimage
-${q+=1}.upswsticker	
-
- ❏「 GROUP 」	
+❏「 GROUP 」	
 ${q+=1}.group
 ${q+=1}.hacked
 ${q+=1}.tagall 
@@ -1661,7 +1717,7 @@ ${q+=1}.setppgc replyimg
 ${q+=1}.antilink
 ${q+=1}.welcome
 
- ❏「 STORAGE 」
+❏「 STORAGE 」
 ${q+=1}.listvn
 ${q+=1}.listvideo
 ${q+=1}.liststicker
@@ -1675,7 +1731,7 @@ ${q+=1}.getvideo data
 ${q+=1}.getsticker data
 ${q+=1}.getimage data
 
- ❏「 CONVERT 」
+❏「 CONVERT 」
 ${q+=1}.tovn replyaudio
 ${q+=1}.tomp3 replyvideo
 ${q+=1}.fast replyvideo 
@@ -1687,7 +1743,7 @@ ${q+=1}.tupai replyaudio
 ${q+=1}.gemuk replyaudio 
 ${q+=1}.nightcore replyaudio
 
- ❏「 Text Pro Me 」	
+❏「 Text Pro Me 」	
 ${q+=1}.blackpink text
 ${q+=1}.neon text
 ${q+=1}.greenneon text
@@ -1731,7 +1787,7 @@ ${q+=1}.wolflogo text text
 ${q+=1}.steel3d text text
 ${q+=1}.wallgravity text text
 
- ❏「 Photo OXY 」	
+❏「 Photo OXY 」	
 ${q+=1}.shadow text
 ${q+=1}.cup text
 ${q+=1}.cup1 text
@@ -1760,7 +1816,7 @@ ${q+=1}.arcade8bit text text
 ${q+=1}.battlefield4 text text
 ${q+=1}.pubg text text
 
- ❏「 Photo 360° 」	
+❏「 Photo 360° 」	
 ${q+=1}.wetglass text
 ${q+=1}.multicolor3d text
 ${q+=1}.watercolor text
@@ -1792,7 +1848,7 @@ ${q+=1}.goldplaybutton text
 ${q+=1}.silverplaybutton text
 ${q+=1}.freefire text
 
- ❏「 EVAL 」
+❏「 EVAL 」
 ${q+=1}.term`)        
           but = [
            { buttonId: `!owner`, buttonText: { displayText: 'OWNER' }, type: 1 },
@@ -1819,15 +1875,18 @@ ${q+=1}.term`)
       if (budy == `Assalamualaikum`) {
             reply(`Waalaikumsalam`)
             }
+            if (budy == `P`) {
+                  reply(`Kesopanan minus( - )\n\n.help untuk melihat semua command/fitur`)
+                  }
           if (isSimi && bodi != undefined){
           res = await axios.get(`https://api-sv2.simsimi.net/v2/?text=${bodi}&lc=id`)
           pp = res.data.success
           zee.sendMessage(from, pp, text)
           }
           if (isCmd) {      
-          menu = monospace(`Maaf kak ${pushname}_<\nCommand ${command} Tidak tersedia di list menu!!\nMohon cek kembali list menu nya kak`)
+          menu = monospace(`Maaf kak ${pushname}\nCommand ${command} Tidak tersedia di list menu!!\nMohon cek kembali list menu nya kak`)
           but = [{ buttonId: `!menu`, buttonText: { displayText: 'MENU' }, type: 1 }]
-          sendButton(from, menu, 'Yannn', but, mek)
+          sendButton(from, menu, 'Yannn - Bot', but, mek)
           break
           }
               
