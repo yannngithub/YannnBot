@@ -1634,7 +1634,8 @@ case 'igstalk':
    txt += `Followers: ${anu.followers}\n`
    txt += `Following: ${anu.following}\n`
    txt += `Account Created: ${anu.createdAt}\n`
-   txt += `Account Update: ${anu.updatedAt}`
+   txt += `Account Update: ${anu.updatedAt}\n\n`
+   txt += `Link: https://github.com/${username}`
    reply( txt )
    break
           case 'gempa':
