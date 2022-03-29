@@ -537,7 +537,7 @@ switch (command) {
            { buttonId: `${prefix + command} ${v}`, buttonText: { displayText: 'NEXT' }, type: 1 }]
           sendButImage(from, `pinterest ${v}`, `Klik Next Ngab`, di, but)
           break
-    case 'lirik':
+    /*case 'lirik':
           if (args.length < 1) return reply("Apa Yang Mau Di Cari? ")
           reply(mess.wait)
           teks = body.slice(7)
@@ -545,7 +545,7 @@ switch (command) {
           let lirik = monospace(`❒「  SEARCH LIRIK  」\n└ Lirik Lagu :\n\n${res[0].result}\n`)
           reply(lirik)
           })
-          break
+          break*/
     case 'ytsearch':
           if (args.length < 1) return reply('Yang mau di cari apaan?')
           teks = args.join(' ')
@@ -1382,11 +1382,16 @@ case 'leave':
 		  break
       case 'twit':
       case 'twitter':
+                  if (args.length == 0){
                    if (args.length == 0) return reply(`*Contoh:* .twitter https://twitter.com/dekai23/status/1488600754256551941`)
                    link = args[0]
                    anu = await fetchJson(`https://api.dapuhy.xyz/api/socialmedia/twitter?url=${link}&apikey=alvianto`)
                    anu = anu.download
                    anu1 = await getBuffer(anu.hd)
+                  } else {
+                  link = args[0]
+                   anu = await fetchJson(`https://hardianto.xyz/api/download/twitter?url=${link}&apikey=hardianto`)
+                   anu1 = await getBuffer(anu.HD)}
                    zee.sendMessage(from, anu1, video, {mimetype: 'video/mp4', quoted: mek })
                    break
       case 'fb':
@@ -1440,6 +1445,14 @@ case 'leave':
           case 'dwd':
           sendFileFromUrl(res[0].link, document, {mimetype: res[0].mime, filename: res[0].nama, quoted: mek})
           break
+          case 'lirik':
+         if (args.length == 0) return reply(`*Contoh:* .lirik Resah jadi luka`)
+         query = args.join(" ")
+         anu = await fetchJson(`https://hardianto.xyz/api/info/lirik?query=${query}&apikey=hardianto`)
+         ini_txt = `${anu.lirik}`
+         thumb = await getBuffer(anu.thumb)
+         zee.sendMessage(from, thumb, image, {caption: ini_txt, quoted: mek})
+         break
 //+++Random
     case 'waifu': case 'loli': case 'husbu': case 'milf': case 'cosplay': case 'wallml':
           let wipu = (await axios.get(`https://raw.githubusercontent.com/Arya-was/endak-tau/main/${command}.json`)).data
@@ -1564,6 +1577,66 @@ zee.sendMessage(from, buff, image, {quoted: mek, caption: `Selesai`}).catch(e =>
   return reply('_[ ! ] Error Gagal Dalam Mendownload Dan Mengirim File_')
 })
 break
+case 'igstalk':
+      if (args.length == 0){
+   if (args.length == 0) return reply(`*Contoh:* .igstalk alvianto17`)
+   username = args.join(" ")
+   anu = await fetchJson(`https://hardianto.xyz/api/igstalk?username=${username}&apikey=hardianto`)
+   txt = `Username: ${anu.username}\n`
+   txt += `Fullname: ${anu.fullname}\n`
+   txt += `Bio: ${anu.bio}\n`
+   txt += `Followers: ${anu.followers}\n`
+   txt += `Following: ${anu.follow}\n`
+   txt += `Verified Account? Ngimpi awokawokawok\n\n`
+   txt += `Link: https://www.instagram.com/${username}/?hl=id`
+   anu1 = await getBuffer(anu.thumbnail)
+      } else {
+            if (args.length == 0) return reply(`*Contoh:* .igstalk alvianto17`)
+            username = args.join(" ")
+            anu = await fetchJson(`https://sanuw-api.herokuapp.com/docs/other/igstalk?username=${username}&apikey=sanuwa`)
+            txt = `Username: ${anu.Username}\n`
+            txt += `Fullname: ${anu.Fullname}\n`
+            txt += `Bio: ${anu.Biography}\n`
+            txt += `Followers: ${anu.Followers}\n`
+            txt += `Following: ${anu.Following}\n`
+            txt += `Verified Account? Ngimpi awokawokawok\n\n`
+            txt += `Link: https://www.instagram.com/${username}/?hl=id`
+            anu1 = await getBuffer(anu.thumbnail)  
+      }
+   zee.sendMessage(from, anu1, image, {caption: txt, quoted: mek})
+   break
+   case 'tiktokstalk':
+   if (args.length == 0) return reply(`*Contoh:* .tiktokstalk alvianto17`)
+   username = args.join(" ")
+   anu = await fetchJson(`https://api.lolhuman.xyz/api/stalktiktok/${username}?apikey=${lolkey}`)
+   anu = anu.result
+   txt = `Username: ${anu.username}\n`
+   txt += `Nickname: ${anu.nickname}\n`
+   txt += `Bio: ${anu.bio}\n`
+   txt += `Like: ${anu.likes}\n`
+   txt += `Video: ${anu.video}\n`
+   txt += `Followers: ${anu.followers}\n`
+   txt += `Following: ${anu.followings}`
+   anu1 = await getBuffer(anu.user_picture)
+   zee.sendMessage(from, anu1, image, {caption: txt, quoted: mek})
+   break
+   case 'githubstalk':
+   if (args.length == 0) return reply(`*Contoh:* .githubstalk alvianto17`)
+   username = args.join(" ")
+   anu = await fetchJson(`https://fxc7-api.herokuapp.com/api/stalk/github?apikey=LDQlH9CncZ&username=${username}`)
+   anu = anu.result
+   txt = `Username: ${anu.username}\n`
+   txt += `Name: ${anu.name}\n`
+   txt += `Bio: ${anu.bio}\n`
+   txt += `Blog: ${anu.blog}\n`
+   txt += `Location: ${anu.location}\n`
+   txt += `Repository: ${anu.repositoty_count}\n`
+   txt += `Followers: ${anu.followers}\n`
+   txt += `Following: ${anu.following}\n`
+   txt += `Account Created: ${anu.created_at}\n`
+   txt += `Account Update: ${anu.update_at}`
+   reply( txt )
+   break
           case 'gempa':
             get_result = await fetchJson(`https://zenzapi.xyz/api/bmkg/gempa?apikey=abc731987d36`)
             get_result = get_result.result
@@ -1640,6 +1713,7 @@ break
 Ambarawa, Ambon, Amlapura, Amuntai, Argamakmur, ͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏Atambua, Babo, Bagan Siapiapi, Bajawa, Balige, Balik Papan, Banda Aceh, Bandarlampung, Bandung, Bangkalan, Bangkinang, Bangko, Bangli, Banjar, Banjar Baru, Banjarmasin, Banjarnegara, Bantaeng, Banten, Bantul, Banyuwangi, Barabai, Barito, Barru, Batam, Batang, Batu, Baturaja, Batusangkar, Baubau, Bekasi, Bengkalis, Bengkulu, Benteng, Biak, Bima, Binjai, Bireuen, Bitung, Blitar, Blora, Bogor, Bojonegoro, Bondowoso, Bontang, Boyolali, Brebes, Bukit Tinggi, Bulukumba, Buntok, Cepu, Ciamis, Cianjur, Cibinong, Cilacap, Cilegon, Cimahi, Cirebon, Curup, Demak, Denpasar, Depok, Dili, Dompu, Donggala, Dumai, Ende, Enggano, Enrekang, Fakfak, Garut, Gianyar, Gombong, Gorontalo, Gresik, Gunung Sitoli, Indramayu, Jakarta, Jambi, Jayapura, Jember, Jeneponto, Jepara, Jombang, Kabanjahe, Kalabahi, Kalianda, Kandangan, Karanganyar, Karawang, Kasungan, Kayuagung, Kebumen, Kediri, Kefamenanu, Kendal, Kendari, Kertosono, Ketapang, Kisaran, Klaten, Kolaka, Kota Baru Pulau Laut, Kota Bumi, Kota Jantho, Kota Mobagu, Kuala Kapuas, Kuala Kurun, Kuala Pembuang, Kuala Tungkal, Kudus, Kuningan, Kupang, Kutacane, Kutoarjo, Labuhan, Lahat, Lamongan, Langsa, Larantuka, Lawang, Lhoseumawe, Limboto, Lubuk Basung, Lubuk Linggau, Lubuk Pakam, Lubuk Sikaping, Lumajang, Luwuk, Madiun, Magelang, Magetan, Majalengka, Majene, Makale, Makassar, Malang, Mamuju, Manna, Manokwari, Marabahan, Maros, Martapura, Masohi, Mataram, Maumere, Medan, Mempawah, Menado, Mentok, Merauke, Metro, Meulaboh, Mojokerto, Muara Bulian, Muara Bungo, Muara Enim, Muara Teweh, Muaro Sijunjung, Muntilan, Nabire, Negara, Nganjuk, Ngawi, Nunukan, Pacitan, Padang, Padang Panjang, Padang Sidempuan, Pagaralam, Painan, Palangkaraya, Palembang, Palopo, Palu, Pamekasan, Pandeglang, Pangkajene, Pangkajene Sidenreng, Pangkalanbun, Pangkalpinang, Panyabungan, Pare, Parepare, Pariaman, Pasuruan, Pati, Payakumbuh, Pekalongan, Pekan Baru, Pemalang, Pematangsiantar, Pendopo, Pinrang, Pleihari, Polewali, Pondok Gede, Ponorogo, Pontianak, Poso, Prabumulih, Praya, Probolinggo, Purbalingga, Purukcahu, Purwakarta, Purwodadigrobogan, Purwokerto, Purworejo, Putussibau, Raha, Rangkasbitung, Rantau, Rantauprapat, Rantepao, Rembang, Rengat, Ruteng, Sabang, Salatiga, Samarinda, Sampang, Sampit, Sanggau, Sawahlunto, Sekayu, Selong, Semarang, Sengkang, Serang, Serui, Sibolga, Sidikalang, Sidoarjo, Sigli, Singaparna, Singaraja, Singkawang, Sinjai, Sintang, Situbondo, Slawi, Sleman, Soasiu, Soe, Solo, Solok, Soreang, Sorong, Sragen, Stabat, Subang, Sukabumi, Sukoharjo, Sumbawa Besar, Sumedang, Sumenep, Sungai Liat, Sungai Penuh, Sungguminasa, Surabaya, Surakarta, Tabanan, Tahuna, Takalar, Takengon, Tamiang Layang, Tanah Grogot, Tangerang, Tanjung Balai, Tanjung Enim, Tanjung Pandan, Tanjung Pinang, Tanjung Redep, Tanjung Selor, Tapak Tuan, Tarakan, Tarutung, Tasikmalaya, Tebing Tinggi, Tegal, Temanggung, Tembilahan, Tenggarong, Ternate, Tolitoli, Tondano, Trenggalek, Tual, Tuban, Tulung Agung, Ujung Berung, Ungaran, Waikabubak, Waingapu, Wamena, Watampone, Watansoppeng, Wates, Wonogiri, Wonosari, Wonosobo, Yogyakarta`
             reply( ini_txt )
             break
+
 case 'donasi':
       donate = `*DONASI KAK BUAT BELI SERVER BOT NYA AGAR BISA AKTIF 24/7*\n
 *GOPAY*
@@ -1660,201 +1734,204 @@ https://saweria.co/Alvianto17`
     case 'allmenu': case 'm2':
           let q = 0
           pp = monospace(`❏「 OWNER 」	          
-0${q+=1}.ping
-0${q+=1}.self
-0${q+=1}.public
-0${q+=1}.runtime
-0${q+=1}.setthumb
+.ping
+.public
+.self
+.runtime
+.setthumb
 
 ❏「 TOOLS 」	
-0${q+=1}.jadibot
-0${q+=1}.stopjadibot
-0${q+=1}.listjadibot
+.jadibot
+.stopjadibot
+.listjadibot
 
 ❏「 SEARCH 」
-0${q+=1}.ssweb link 
-${q+=1}.lirik lirik lagu
-${q+=1}.gimage query
-${q+=1}.pinterest query
-${q+=1}.ytsearch query
+.ssweb link 
+.lirik judul
+.gimage query
+.pinterest query
+.ytsearch query
 
 ❏「 DOWLOAD 」	
-${q+=1}.play query
-${q+=1}.tiktok link
-${q+=1}.ytmp3 link
-${q+=1}.ytmp4 link
-${q+=1}.twitter link
-${q+=1}.facebook link
-${q+=1}.Instagram link
-${q+=1}.mediafire link
+.play query
+.tiktok link
+.ytmp3 link
+.ytmp4 link
+.twitter link
+.facebook link
+.Instagram link
+.mediafire link
 
 ❏「 INFORMASI 」
-${q+=1}.gempa
-${q+=1}.gempaterbaru
-${q+=1}.cuaca kotamu
-${q+=1}.corona
-${q+=1}.jadwalsholat kotamu
+.gempa
+.gempaterbaru
+.cuaca kotamu
+.corona
+.jadwalsholat kotamu
 
+❏「 STALKER 」
+.igstalk username
+.tiktokstalk username
+.githubstalk usernamw
 
 ❏「 MEDIA 」	
-${q+=1}.attp text
-${q+=1}.tourl
-${q+=1}.toimg reply
-${q+=1}.semoji emot
-${q+=1}.sticker reply
+.attp text
+.tourl
+.toimg reply
+.semoji emot
+.sticker reply
 
 ❏「 GROUP 」	
-${q+=1}.group
-${q+=1}.hacked
-${q+=1}.tagall 
-${q+=1}.hidetag 
-${q+=1}.add 62
-${q+=1}.linkgroup
-${q+=1}.resetlink
-${q+=1}.kick tag
-${q+=1}.join link
-${q+=1}.demote tag
-${q+=1}.promote tag
-${q+=1}.del replymes
-${q+=1}.setdesc text
-${q+=1}.setname name
-${q+=1}.setppgc replyimg
-${q+=1}.antilink
-${q+=1}.welcome
+.group
+.hacked
+.tagall 
+.hidetag 
+.add 62
+.linkgroup
+.resetlink
+.kick tag
+.join link
+.demote tag
+.promote tag
+.del replymes
+.setdesc text
+.setname name
+.setppgc replyimg
+.antilink
+.welcome
 
 ❏「 STORAGE 」
-${q+=1}.listvn
-${q+=1}.listvideo
-${q+=1}.liststicker
-${q+=1}.listimg
-${q+=1}.addvn nama
-${q+=1}.addvideo nama
-${q+=1}.addsticker nama
-${q+=1}.addimage nama
-${q+=1}.getvn data
-${q+=1}.getvideo data
-${q+=1}.getsticker data
-${q+=1}.getimage data
+.listvn
+.listvideo
+.liststicker
+.listimg
+.addvn nama
+.addvideo nama
+.addsticker nama
+.addimage nama
+.getvn data
+.getvideo data
+.getsticker data
+.getimage data
 
 ❏「 CONVERT 」
-${q+=1}.tovn replyaudio
-${q+=1}.tomp3 replyvideo
-${q+=1}.fast replyvideo 
-${q+=1}.slow replyvideo 
-${q+=1}.reverse replyvideo 
-${q+=1}.slow2 replyaudio 
-${q+=1}.bass replyaudio 
-${q+=1}.tupai replyaudio
-${q+=1}.gemuk replyaudio 
-${q+=1}.nightcore replyaudio
+.tovn replyaudio
+.tomp3 replyvideo
+.fast replyvideo 
+.slow replyvideo 
+.reverse replyvideo 
+.slow2 replyaudio 
+.bass replyaudio 
+.tupai replyaudio
+.gemuk replyaudio 
+.nightcore replyaudio
 
 ❏「 Text Pro Me 」	
-${q+=1}.blackpink text
-${q+=1}.neon text
-${q+=1}.greenneon text
-${q+=1}.advanceglow text
-${q+=1}.futureneon text
-${q+=1}.sandwriting text
-${q+=1}.sandsummer text
-${q+=1}.sandengraved text
-${q+=1}.metaldark text
-${q+=1}.neonlight text
-${q+=1}.holographic text
-${q+=1}.text1917 text
-${q+=1}.minion text
-${q+=1}.deluxesilver text
-${q+=1}.newyearcard text
-${q+=1}.bloodfrosted text
-${q+=1}.halloween text
-${q+=1}.jokerlogo text
-${q+=1}.fireworksparkle text
-${q+=1}.natureleaves text
-${q+=1}.bokeh text
-${q+=1}.toxic text
-${q+=1}.strawberry text
-${q+=1}.box3d text
-${q+=1}.roadwarning text
-${q+=1}.breakwall text
-${q+=1}.icecold text
-${q+=1}.luxury text
-${q+=1}.cloud text
-${q+=1}.summersand text
-${q+=1}.horrorblood text
-${q+=1}.thunder text
-${q+=1}.pornhub text text
-${q+=1}.glitch text text
-${q+=1}.avenger text text
-${q+=1}.space text text
-${q+=1}.ninjalogo text text
-${q+=1}.marvelstudio text text
-${q+=1}.lionlogo text text
-${q+=1}.wolflogo text text
-${q+=1}.steel3d text text
-${q+=1}.wallgravity text text
+.blackpink text
+.neon text
+.greenneon text
+.advanceglow text
+.futureneon text
+.sandwriting text
+.sandsummer text
+.sandengraved text
+.metaldark text
+.neonlight text
+.holographic text
+.text1917 text
+.minion text
+.deluxesilver text
+.newyearcard text
+.bloodfrosted text
+.halloween text
+.jokerlogo text
+.fireworksparkle text
+.natureleaves text
+.bokeh text
+.toxic text
+.strawberry text
+.box3d text
+.roadwarning text
+.breakwall text
+.icecold text.luxury text
+.cloud text
+.summersand text
+.horrorblood text
+.thunder text
+.pornhub text text
+.glitch text text
+.avenger text text
+.space text text
+.ninjalogo text text
+.marvelstudio text text
+.lionlogo text text
+.wolflogo text text
+.steel3d text text
+.wallgravity text text
 
 ❏「 Photo OXY 」	
-${q+=1}.shadow text
-${q+=1}.cup text
-${q+=1}.cup1 text
-${q+=1}.romance text
-${q+=1}.smoke text
-${q+=1}.burnpaper text
-${q+=1}.lovemessage text
-${q+=1}.undergrass text
-${q+=1}.love text
-${q+=1}.coffe text
-${q+=1}.woodheart text
-${q+=1}.woodenboard text
-${q+=1}.summer3d text
-${q+=1}.wolfmetal text
-${q+=1}.nature3d text
-${q+=1}.underwater text
-${q+=1}.golderrose text
-${q+=1}.summernature text
-${q+=1}.letterleaves text
-${q+=1}.glowingneon text
-${q+=1}.fallleaves text
-${q+=1}.flamming text
-${q+=1}.harrypotter text
-${q+=1}.carvedwood text
-${q+=1}.arcade8bit text text
-${q+=1}.battlefield4 text text
-${q+=1}.pubg text text
+.shadow text
+.cup text
+.cup1 text
+.romance text
+.smoke text
+.burnpaper text
+.lovemessage text
+.undergrass text
+.love text
+.coffe text
+.woodheart text
+.woodenboard text
+.summer3d text
+.wolfmetal text
+.nature3d text
+.underwater text
+.golderrose text
+.summernature text
+.letterleaves text
+.glowingneon text
+.fallleaves text
+.flamming text
+.harrypotter text
+.carvedwood text
+.arcade8bit text text
+.battlefield4 text text
+.pubg text text
 
 ❏「 Photo 360° 」	
-${q+=1}.wetglass text
-${q+=1}.multicolor3d text
-${q+=1}.watercolor text
-${q+=1}.luxurygold text
-${q+=1}.galaxywallpaper text
-${q+=1}.lighttext text
-${q+=1}.beautifulflower text
-${q+=1}.puppycute text
-${q+=1}.royaltext text
-${q+=1}.heartshaped text
-${q+=1}.birthdaycake text
-${q+=1}.galaxystyle text
-${q+=1}.hologram3d text
-${q+=1}.greenneon text
-${q+=1}.glossychrome text
-${q+=1}.greenbush text
-${q+=1}.metallogo text
-${q+=1}.noeltext text
-${q+=1}.glittergold text
-${q+=1}.textcake text
-${q+=1}.starsnight text
-${q+=1}.wooden3d text
-${q+=1}.textbyname text
-${q+=1}.writegalacy text
-${q+=1}.galaxybat text
-${q+=1}.snow3d text
-${q+=1}.birthdayday text
-${q+=1}.goldplaybutton text
-${q+=1}.silverplaybutton text
-${q+=1}.freefire text
+.wetglass text
+.multicolor3d text
+.watercolor text
+.luxurygold text
+.galaxywallpaper text
+.lighttext text
+.beautifulflower text
+.puppycute text
+.royaltext text
+.heartshaped text
+.birthdaycake text
+.galaxystyle text
+.hologram3d text
+.greenneon text
+.glossychrome text
+.greenbush text
+.metallogo text
+.noeltext text
+.glittergold text
+.textcake text
+.starsnight text
+.wooden3d text
+.textbyname text
+.writegalacy text
+.galaxybat text
+.snow3d text
+.birthdayday text
+.goldplaybutton text
+.silverplaybutton text
+.freefire text
 
 ❏「 EVAL 」
-${q+=1}.term`)        
+.term`)        
           but = [
            { buttonId: `!owner`, buttonText: { displayText: 'OWNER' }, type: 1 },
            { buttonId: `!donasi`, buttonText: { displayText: 'DONASI' }, type: 1 }]
