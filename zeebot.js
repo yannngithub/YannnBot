@@ -1391,15 +1391,14 @@ case 'leave':
                    break
       case 'fb':
       case 'facebook':
+                  if (args.length == 0){
                      if (args.length == 0) return reply(`*Contoh:* .fb2 https://www.facebook.com/groups/526925218448628/permalink/591475845326898/`)
                      link = args[0]
-                     try{
                      anu = await fetchJson(`https://api.neoxr.eu.org/api/fb?url=${link}&apikey=yourkey`)
-                        anu1 = await getBuffer(anu.data[1].url)}
-                        catch (e){
+                        anu1 = await getBuffer(anu.data[1].url)
+                        } else {
                         anu1 = await getBuffer(anu.data[0].url)
-                        }
-                        zee.sendMessage(from, anu1, video, { quoted:mek })
+                        zee.sendMessage(from, anu1, video, { quoted:mek })}
                      break
      case "instagram":
       case "ig":
