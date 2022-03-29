@@ -1397,6 +1397,7 @@ case 'leave':
                      anu = await fetchJson(`https://api.neoxr.eu.org/api/fb?url=${link}&apikey=yourkey`)
                         anu1 = await getBuffer(anu.data[1].url)
                         } else {
+			link = args[0]
 			anu = await fetchJson(`https://api.neoxr.eu.org/api/fb?url=${link}&apikey=yourkey`)
                         anu1 = await getBuffer(anu.data[0].url)
                         zee.sendMessage(from, anu1, video, { quoted:mek })}
