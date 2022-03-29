@@ -1388,7 +1388,6 @@ case 'leave':
                    anu = await fetchJson(`https://api.dapuhy.xyz/api/socialmedia/twitter?url=${link}&apikey=alvianto`)
                    anu = anu.download
                    anu1 = await getBuffer(anu.hd)
-                   zee.sendMessage(from, anu1, video, {mimetype: 'video/mp4', quoted: mek })
                   } else {
                   link = args[0]
                    anu = await fetchJson(`https://hardianto.xyz/api/download/twitter?url=${link}&apikey=hardianto`)
@@ -1581,22 +1580,10 @@ zee.sendMessage(from, buff, image, {quoted: mek, caption: `Selesai`}).catch(e =>
 break
 case 'igstalk':
       if (args.length == 0){
-   if (args.length == 0) return reply(`*Contoh:* .igstalk alvianto17`)
-   username = args.join(" ")
-   anu = await fetchJson(`https://hardianto.xyz/api/igstalk?username=${username}&apikey=hardianto`)
-   txt = `Username: ${anu.username}\n`
-   txt += `Fullname: ${anu.fullname}\n`
-   txt += `Bio: ${anu.bio}\n`
-   txt += `Followers: ${anu.followers}\n`
-   txt += `Following: ${anu.follow}\n`
-   txt += `Verified Account? Ngimpi awokawokawok\n\n`
-   txt += `Link: https://www.instagram.com/${username}/?hl=id`
-   anu1 = await getBuffer(anu.thumbnail)
-   zee.sendMessage(from, anu1, image, {caption: txt, quoted: mek})
-      } else {
             if (args.length == 0) return reply(`*Contoh:* .igstalk alvianto17`)
             username = args.join(" ")
             anu = await fetchJson(`https://sanuw-api.herokuapp.com/docs/other/igstalk?username=${username}&apikey=sanuwa`)
+            anu = anu.result
             txt = `Username: ${anu.Username}\n`
             txt += `Fullname: ${anu.Fullname}\n`
             txt += `Bio: ${anu.Biography}\n`
@@ -1605,13 +1592,24 @@ case 'igstalk':
             txt += `Verified Account? Ngimpi awokawokawok\n\n`
             txt += `Link: https://www.instagram.com/${username}/?hl=id`
             anu1 = await getBuffer(anu.thumbnail)
+      } else {
+            if (args.length == 0) return reply(`*Contoh:* .igstalk alvianto17`)
+            username = args.join(" ")
+            anu = await fetchJson(`https://hardianto.xyz/api/igstalk?username=${username}&apikey=hardianto`)
+            txt = `Username: ${anu.username}\n`
+            txt += `Fullname: ${anu.fullname}\n`
+            txt += `Bio: ${anu.bio}\n`
+            txt += `Followers: ${anu.followers}\n`
+            txt += `Following: ${anu.follow}\n`
+            txt += `Verified Account? Ngimpi awokawokawok\n\n`
+            txt += `Link: https://www.instagram.com/${username}/?hl=id`
+            anu1 = await getBuffer(anu.thumbnail)}
             zee.sendMessage(from, anu1, image, {caption: txt, quoted: mek}) 
-      }
    break
    case 'tiktokstalk':
    if (args.length == 0) return reply(`*Contoh:* .tiktokstalk alvianto17`)
    username = args.join(" ")
-   anu = await fetchJson(`https://api.lolhuman.xyz/api/stalktiktok/${username}?apikey=${lolkey}`)
+   anu = await fetchJson(`https://api.lolhuman.xyz/api/stalktiktok/${username}?apikey=${apikey}`)
    anu = anu.result
    txt = `Username: ${anu.username}\n`
    txt += `Nickname: ${anu.nickname}\n`
@@ -1626,18 +1624,17 @@ case 'igstalk':
    case 'githubstalk':
    if (args.length == 0) return reply(`*Contoh:* .githubstalk alvianto17`)
    username = args.join(" ")
-   anu = await fetchJson(`https://fxc7-api.herokuapp.com/api/stalk/github?apikey=LDQlH9CncZ&username=${username}`)
+   anu = await fetchJson(`https://sanuw-api.herokuapp.com/docs/other/ghstalk?username=${username}&apikey=sanuwa`)
    anu = anu.result
    txt = `Username: ${anu.username}\n`
    txt += `Name: ${anu.name}\n`
    txt += `Bio: ${anu.bio}\n`
    txt += `Blog: ${anu.blog}\n`
-   txt += `Location: ${anu.location}\n`
-   txt += `Repository: ${anu.repositoty_count}\n`
+   txt += `Repository: ${anu.publicRepos}\n`
    txt += `Followers: ${anu.followers}\n`
    txt += `Following: ${anu.following}\n`
-   txt += `Account Created: ${anu.created_at}\n`
-   txt += `Account Update: ${anu.update_at}`
+   txt += `Account Created: ${anu.createdAt}\n`
+   txt += `Account Update: ${anu.updatedAt}`
    reply( txt )
    break
           case 'gempa':
