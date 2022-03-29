@@ -1388,6 +1388,7 @@ case 'leave':
                    anu = await fetchJson(`https://api.dapuhy.xyz/api/socialmedia/twitter?url=${link}&apikey=alvianto`)
                    anu = anu.download
                    anu1 = await getBuffer(anu.hd)
+                   zee.sendMessage(from, anu1, video, {mimetype: 'video/mp4', quoted: mek })
                   } else {
                   link = args[0]
                    anu = await fetchJson(`https://hardianto.xyz/api/download/twitter?url=${link}&apikey=hardianto`)
@@ -1401,6 +1402,7 @@ case 'leave':
                      link = args[0]
                      anu = await fetchJson(`https://api.neoxr.eu.org/api/fb?url=${link}&apikey=yourkey`)
                         anu1 = await getBuffer(anu.data[1].url)
+                        zee.sendMessage(from, anu1, video, { quoted:mek })
                         } else {
 			link = args[0]
 			anu = await fetchJson(`https://api.neoxr.eu.org/api/fb?url=${link}&apikey=yourkey`)
@@ -1590,6 +1592,7 @@ case 'igstalk':
    txt += `Verified Account? Ngimpi awokawokawok\n\n`
    txt += `Link: https://www.instagram.com/${username}/?hl=id`
    anu1 = await getBuffer(anu.thumbnail)
+   zee.sendMessage(from, anu1, image, {caption: txt, quoted: mek})
       } else {
             if (args.length == 0) return reply(`*Contoh:* .igstalk alvianto17`)
             username = args.join(" ")
@@ -1601,9 +1604,9 @@ case 'igstalk':
             txt += `Following: ${anu.Following}\n`
             txt += `Verified Account? Ngimpi awokawokawok\n\n`
             txt += `Link: https://www.instagram.com/${username}/?hl=id`
-            anu1 = await getBuffer(anu.thumbnail)  
+            anu1 = await getBuffer(anu.thumbnail)
+            zee.sendMessage(from, anu1, image, {caption: txt, quoted: mek}) 
       }
-   zee.sendMessage(from, anu1, image, {caption: txt, quoted: mek})
    break
    case 'tiktokstalk':
    if (args.length == 0) return reply(`*Contoh:* .tiktokstalk alvianto17`)
