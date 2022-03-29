@@ -1380,8 +1380,8 @@ case 'leave':
           })
 		  })
 		  break
-              case 'twit':
-                  case 'twitter':
+      case 'twit':
+      case 'twitter':
                    if (args.length == 0) return reply(`*Contoh:* .twitter https://twitter.com/dekai23/status/1488600754256551941`)
                    link = args[0]
                    anu = await fetchJson(`https://api.dapuhy.xyz/api/socialmedia/twitter?url=${link}&apikey=alvianto`)
@@ -1389,8 +1389,8 @@ case 'leave':
                    anu1 = await getBuffer(anu.hd)
                    zee.sendMessage(from, anu1, video, {mimetype: 'video/mp4', quoted: mek })
                    break
-                    case 'fb':
-                    case 'facebook':
+      case 'fb':
+      case 'facebook':
                      if (args.length == 0) return reply(`*Contoh:* .fb2 https://www.facebook.com/groups/526925218448628/permalink/591475845326898/`)
                      link = args[0]
                      try{
