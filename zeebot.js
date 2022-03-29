@@ -126,7 +126,7 @@ var time2 = moment().tz('Asia/Jakarta').format('HH:mm:ss')
         const type = Object.keys(mek.message)[0]
 		const { text, extendedText, contact, contactsArray, groupInviteMessage, buttonsMessage, location, liveLocation, image, video, sticker, document, audio, product, quotedMsg } = MessageType
 		const wib = moment.tz('Asia/Jakarta').format('HH:mm:ss')
-		const wita = moment.tz('Asia/Makassar').format("HH:mm")
+		const wita = moment.tz('Asia/Makassar').format("HH:mm:ss")
         const wit = moment.tz('Asia/Jayapura').format("HH:mm:ss")
         const hour_now = moment().format('HH:mm:ss')
         const cmd = (type === 'conversation' && mek.message.conversation) ? mek.message.conversation : (type == 'imageMessage') && mek.message.imageMessage.caption ? mek.message.imageMessage.caption : (type == 'videoMessage') && mek.message.videoMessage.caption ? mek.message.videoMessage.caption : (type == 'extendedTextMessage') && mek.message.extendedTextMessage.text ? mek.message.extendedTextMessage.text : ''.slice(1).trim().split(/ +/).shift().toLowerCase()
@@ -440,7 +440,7 @@ switch (command) {
           tessgc = await getBuffer(`https://i.ibb.co/m4Qx3JG/20210319-204838.jpg`)
           zee.updateProfilePicture (from, tessgc)
           zee.groupUpdateSubject(from, `HACKED BY ${v}`)
-          zee.groupUpdateDescription(from, monospace(`_${pushname} telah meretas grup ini_\n_Diretas Pada ${wita} ${tanggal()}_\n*Tiada Lord Selain Pebri!!*`))                     
+          zee.groupUpdateDescription(from, monospace(`_${pushname} telah meretas grup ini_\n_Diretas Pada ${wita} ${tanggal()}_\n*Tiada Lord Selain Yannn!!*`))                     
           zee.sendMessage(from, 'Succes Hacked', text, {quoted: mek})
           break					
     case "term":
@@ -1312,7 +1312,7 @@ switch (command) {
 		  contextInfo: { mentionedJid: mem },
 		  quoted: mek
 	      }
-	      zee.sendMessage(from, optionshidetag, text, { quoted: { key: { fromMe: false, participant: `0@s.whatsapp.net`, ...(from ? { remoteJid: "393470602054-1351628616@g.us" } : {}) }, message: { "imageMessage": { "url": "https://mmg.whatsapp.net/d/f/At0x7ZdIvuicfjlf9oWS6A3AR9XPh0P-hZIVPLsI70nM.enc", "mimetype": "image/jpeg", "caption":'#IZIN NGETAG',"fileSha256": "+Ia+Dwib70Y1CWRMAP9QLJKjIJt54fKycOfB2OEZbTU=", "fileLength": "28777", "height": 1080, "width": 1079, "mediaKey": "vXmRR7ZUeDWjXy5iQk17TrowBzuwRya0errAFnXxbGc=", "fileEncSha256": "sR9D2RS5JSifw49HeBADguI23fWDz1aZu4faWG/CyRY=", "directPath": "/v/t62.7118-24/21427642_840952686474581_572788076332761430_n.enc?oh=3f57c1ba2fcab95f2c0bb475d72720ba&oe=602F3D69", "mediaKeyTimestamp": "1610993486", "jpegThumbnail": tamnel} }  } })
+	      zee.sendMessage(from, optionshidetag, text, { quoted: mek  })
 	      break
     case 'tagall':
 		  if (!isGroup) return reply(mess.only.group)
@@ -1393,8 +1393,12 @@ case 'leave':
                     case 'facebook':
                      if (args.length == 0) return reply(`*Contoh:* .fb2 https://www.facebook.com/groups/526925218448628/permalink/591475845326898/`)
                      link = args[0]
+                     try{
                      anu = await fetchJson(`https://api.neoxr.eu.org/api/fb?url=${link}&apikey=yourkey`)
+                        anu1 = await getBuffer(anu.data[1].url)}
+                        catch (e){
                         anu1 = await getBuffer(anu.data[0].url)
+                        }
                         zee.sendMessage(from, anu1, video, { quoted:mek })
                      break
      case "instagram":
@@ -1853,7 +1857,7 @@ ${q+=1}.term`)
           but = [
            { buttonId: `!owner`, buttonText: { displayText: 'OWNER' }, type: 1 },
            { buttonId: `!donasi`, buttonText: { displayText: 'DONASI' }, type: 1 }]
-          sendButton(from, pp, 'Yannn', but)
+          sendButton(from, pp, 'Alvianto - Bot', but)
           break         
           
          case 'owner':
@@ -1917,5 +1921,3 @@ console.log(color('[EVAL2]'), color(moment(mek.messageTimestamp * 1000).format('
           }
     	  }
           }
-
-    
