@@ -502,15 +502,15 @@ switch (command) {
           break           
 
 //>>>WibuMenu
-   /* case 'nezuko':
-    case '
+
+    case 'pinterest':
           pin = await hx.pinterest(commnad)
           ac = pin[Math.floor(Math.random() * pin.length)]
           di = await getBuffer(ac)
           but = [
            { buttonId: `${prefix + command} ${v}`, buttonText: { displayText: 'NEXT' }, type: 1 }]
           sendButImage(from, `pinterest ${v}`, `Klik Next Ngab`, di, but)
-          break*/
+          break
                     
 //»»»𝘚𝘦𝘢𝘳𝘤𝘩𝘪𝘯𝘨 𝘔𝘦𝘯𝘶
     case 'gimage':
@@ -1373,12 +1373,20 @@ case 'leave':
  		  reply(mess.wait)
 		  hx.ttdownloader(`${args[0]}`)
     	  .then(result => {
-          const { wm, nowm, audio } = result
-          axios.get(`https://tinyurl.com/api-create.php?url=${nowm}`)
-          .then(async (a) => {
-	      zee.sendMessage(from,{url:`${nowm}`},video,{mimetype:'video/mp4',quoted:mek})
-          })
+            const { wm, nowm, audio } = result
+            zee.sendMessage(from,{url:`${nowm}`},video,{mimetype:'video/mp4',quoted:mek})
 		  })
+		  break
+              case 'tiktokaudiodl': case 'tiktokmusic': case 'tiktokmusik': case 'tiktokaudio': case 'ta': case 'tta':       	    
+ 	      if (!isUrl(args[0]) && !args[0].includes('tiktok')) return reply(mess.Iv)
+ 	      if (!v) return reply('Link?')
+ 		  reply(mess.wait)
+               link = args[0]
+               anu = await fetchJson(`http://hadi-api.herokuapp.com/api/tiktok?url=${args[0]}`)
+               anu = anu.result
+               anu1 = anu.audio_only
+               anu2 = await getBuffer(anu1.original)
+               zee.sendMessage(from, anu2, document, { mimetype: 'audio/mp3',filename: getRandom('.mp3'), quoted: mek })
 		  break
       case 'twit':
       case 'twitter':
@@ -1567,6 +1575,7 @@ case 'leave':
           })
           break
           case 'tulis':
+            case 'nulis':
 if (args.length < 1) return reply('Yang mau di tulis apaan?')
 teks = args.join(' ')
 reply(mess.wait)
@@ -1756,6 +1765,7 @@ https://saweria.co/Alvianto17`
 ❏「 DOWLOAD 」	
 .play query
 .tiktok link
+.tiktokaudio link
 .ytmp3 link
 .ytmp4 link
 .twitter link
@@ -1775,7 +1785,8 @@ https://saweria.co/Alvianto17`
 .tiktokstalk username
 .githubstalk usernamw
 
-❏「 MEDIA 」	
+❏「 MEDIA 」
+.nulis text	
 .attp text
 .tourl
 .toimg reply
@@ -1952,7 +1963,6 @@ https://saweria.co/Alvianto17`
          + 'END:VCARD'.trim()
          zee.sendMessage(from, {displayName: `Alvianto Owner Bot`, vcard: vcard2}, contact)
          break
-             
 		                         
    default:
       if (budy == `Assalamualaikum`) {
