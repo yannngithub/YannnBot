@@ -45,7 +45,7 @@ let time = moment().tz('Asia/Jakarta').format("HH:mm:ss")
 let { yta, ytv, igdl, upload, formatDate } = require('./lib/ytdl')
 let { jadibot, stopjadibot, listjadibot } = require("./lib/jadibot");
 let { uptotele, uploadFile, uploadImages } = require('./lib/uploadimage');
-let { Miminnya, BotName, fake, ownerNumber } = require('./setting.json')
+let { Miminnya, BotName, fake, ownerNumber, ownerNumber2 } = require('./setting.json')
 let { getBuffer, h2k, generateMessageID, getGroupAdmins, getRandom, NumberRandom, createExif} = require('./lib/functions')
 const { query } = require('express')
 
@@ -149,6 +149,7 @@ var time2 = moment().tz('Asia/Jakarta').format('HH:mm:ss')
 	    const sender = isGroup ? mek.participant : mek.key.remoteJid
 	    const OwnerNumber = ["62895401223315@s.whatsapp.net"]
      	const isOwner = ownerNumber.includes(sender)
+           const isDoi = ownerNumber2.includes(sender)
      	const totalchat = await zee.chats.all()
 	    const groupMetadata = isGroup ? await zee.groupMetadata(from) : ''
 	    const groupName = isGroup ? groupMetadata.subject : ''
@@ -1580,7 +1581,7 @@ zee.sendMessage(from, buff, image, {quoted: mek, caption: `Selesai`}).catch(e =>
 })
 break
 case 'cekresi':
-      if (!isOwner && !mek.key.fromMe) return reply(mess.only.owner)
+      if (!isOwner && !isDoi && !mek.key.fromMe) return reply(mess.only.owner)
       F = args[0]
       F1 = F.split("|")[0];
       F2 = F.split("|")[1];
@@ -1607,7 +1608,7 @@ case 'cekresi':
      break
 case 'igstalk':
       if (args.length == 0){
-            if (args.length == 0) return reply(`*Contoh:* .igstalk alvianto17`)
+            if (args.length == 0) return reply(`*Contoh:* .igstalk alvianto.17`)
             username = args.join(" ")
             anu = await fetchJson(`https://sanuw-api.herokuapp.com/docs/other/igstalk?username=${username}&apikey=sanuwa`)
             anu = anu.result
@@ -1620,7 +1621,7 @@ case 'igstalk':
             txt += `Link: https://www.instagram.com/${username}/?hl=id`
             anu1 = await getBuffer(anu.thumbnail)
       } else {
-            if (args.length == 0) return reply(`*Contoh:* .igstalk alvianto17`)
+            if (args.length == 0) return reply(`*Contoh:* .igstalk alvianto.17`)
             username = args.join(" ")
             anu = await fetchJson(`https://hardianto.xyz/api/igstalk?username=${username}&apikey=hardianto`)
             txt = `Username: ${anu.username}\n`
@@ -1967,7 +1968,7 @@ https://saweria.co/Alvianto17`
           but = [
            { buttonId: `!owner`, buttonText: { displayText: 'OWNER' }, type: 1 },
            { buttonId: `!donasi`, buttonText: { displayText: 'DONASI' }, type: 1 }]
-          sendButton(from, pp, 'Alvianto - Bot', but)
+          sendButton(from, pp, 'Yannn - Bot', but)
           break         
           
          case 'owner':
