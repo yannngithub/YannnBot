@@ -1381,31 +1381,21 @@ case 'leave':
 		  break
       case 'twit':
       case 'twitter':
-                  if (args.length == 0){
                    if (args.length == 0) return reply(`*Contoh:* .twitter https://twitter.com/dekai23/status/1488600754256551941`)
                    link = args[0]
                    anu = await fetchJson(`https://api.dapuhy.xyz/api/socialmedia/twitter?url=${link}&apikey=alvianto`)
                    anu = anu.download
                    anu1 = await getBuffer(anu.hd)
-                  } else {
-                  link = args[0]
-                   anu = await fetchJson(`https://hardianto.xyz/api/download/twitter?url=${link}&apikey=hardianto`)
-                   anu1 = await getBuffer(anu.HD)}
                    zee.sendMessage(from, anu1, video, {mimetype: 'video/mp4', quoted: mek })
                    break
       case 'fb':
       case 'facebook':
-                  if (args.length == 0){
-                     if (args.length == 0) return reply(`*Contoh:* .fb2 https://www.facebook.com/groups/526925218448628/permalink/591475845326898/`)
+                  if (args.length == 0) return reply(`*Contoh:* .fb https://www.facebook.com/groups/526925218448628/permalink/591475845326898/`)
                      link = args[0]
-                     anu = await fetchJson(`https://api.neoxr.eu.org/api/fb?url=${link}&apikey=yourkey`)
-                        anu1 = await getBuffer(anu.data[1].url)
-                        zee.sendMessage(from, anu1, video, { quoted:mek })
-                        } else {
-			link = args[0]
-			anu = await fetchJson(`https://api.neoxr.eu.org/api/fb?url=${link}&apikey=yourkey`)
-                        anu1 = await getBuffer(anu.data[0].url)
-                        zee.sendMessage(from, anu1, video, { quoted:mek })}
+                     anu = await fetchJson(`https://violetics.pw/api/downloader/facebook?apikey=bee1-117a-02c8&url=${link}`)
+                     anu = anu.result
+                     anu1 = await getBuffer(anu.url[0].url)
+                     zee.sendMessage(from, anu1, video, {quoted: mek})
                      break
      case "instagram":
       case "ig":
@@ -1610,20 +1600,6 @@ case 'cekresi':
      reply(tlhsmp)
      break
 case 'igstalk':
-      if (args.length == 0){
-            if (args.length == 0) return reply(`*Contoh:* .igstalk alvianto.17`)
-            username = args.join(" ")
-            anu = await fetchJson(`https://sanuw-api.herokuapp.com/docs/other/igstalk?username=${username}&apikey=sanuwa`)
-            anu = anu.result
-            txt = `Username: ${anu.Username}\n`
-            txt += `Fullname: ${anu.Fullname}\n`
-            txt += `Bio: ${anu.Biography}\n`
-            txt += `Followers: ${anu.Followers}\n`
-            txt += `Following: ${anu.Following}\n`
-            txt += `Verified Account? Ngimpi awokawokawok\n\n`
-            txt += `Link: https://www.instagram.com/${username}/?hl=id`
-            anu1 = await getBuffer(anu.thumbnail)
-      } else {
             if (args.length == 0) return reply(`*Contoh:* .igstalk alvianto.17`)
             username = args.join(" ")
             anu = await fetchJson(`https://hardianto.xyz/api/igstalk?username=${username}&apikey=hardianto`)
@@ -1634,7 +1610,7 @@ case 'igstalk':
             txt += `Following: ${anu.follow}\n`
             txt += `Verified Account? Ngimpi awokawokawok\n\n`
             txt += `Link: https://www.instagram.com/${username}/?hl=id`
-            anu1 = await getBuffer(anu.thumbnail)}
+            anu1 = await getBuffer(anu.thumbnail)
             zee.sendMessage(from, anu1, image, {caption: txt, quoted: mek}) 
    break
    case 'tiktokstalk':
