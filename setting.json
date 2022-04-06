@@ -1,8 +1,7 @@
 {
    "Miminnya" : "Alvianto",
    "BotName" : "Yannn - Bot",   
-   "ownerNumber" : "62895401223315@s.whatsapp.net",
-   "ownerNumber2" : "6285700529831@s.whatsapp.net",
+   "ownerNumber" : ["62895401223315@s.whatsapp.net","6285700529831@s.whatsapp.net"],
    "fake" : "Yannn - Bot",
    "SesionName" : "session"
 }
