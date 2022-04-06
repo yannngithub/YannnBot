@@ -45,7 +45,7 @@ let time = moment().tz('Asia/Jakarta').format("HH:mm:ss")
 let { yta, ytv, igdl, upload, formatDate } = require('./lib/ytdl')
 let { jadibot, stopjadibot, listjadibot } = require("./lib/jadibot");
 let { uptotele, uploadFile, uploadImages } = require('./lib/uploadimage');
-let { Miminnya, BotName, fake, ownerNumber, ownerNumber2 } = require('./setting.json')
+let { Miminnya, BotName, fake, ownerNumber, NumberDoi } = require('./setting.json')
 let { getBuffer, h2k, generateMessageID, getGroupAdmins, getRandom, NumberRandom, createExif} = require('./lib/functions')
 const { query } = require('express')
 
@@ -149,7 +149,7 @@ var time2 = moment().tz('Asia/Jakarta').format('HH:mm:ss')
 	    const sender = isGroup ? mek.participant : mek.key.remoteJid
 	    const OwnerNumber = ["62895401223315@s.whatsapp.net"]
      	const isOwner = ownerNumber.includes(sender)
-           const isDoi = ownerNumber2.includes(sender)
+           const isDoi = NumberDoi.includes(sender)
      	const totalchat = await zee.chats.all()
 	    const groupMetadata = isGroup ? await zee.groupMetadata(from) : ''
 	    const groupName = isGroup ? groupMetadata.subject : ''
