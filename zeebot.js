@@ -488,7 +488,6 @@ switch (command) {
     case 'antilink':
           pp = 'ON or OFF?'
           but = [
-
            { buttonId: `!anti off`, buttonText: { displayText: 'OFF' }, type: 1 },
            { buttonId: `!anti on`, buttonText: { displayText: 'ON️' }, type: 1 }]
           sendButton(from, pp, 'Antilink', but)
