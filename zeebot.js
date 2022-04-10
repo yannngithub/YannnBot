@@ -437,7 +437,7 @@ switch (command) {
 		
 	case 'clearall':
              if (!isOwner) return reply(mess.only.owner)
-             anu = await client.chats.all()
+             anu = await zee.chats.all()
              zee.setMaxListeners(25)
              for (let _ of anu) {
              zee.deleteChat(_.jid)
