@@ -434,7 +434,16 @@ const katalog = (teks) => {
 switch(is) {
 }            
 switch (command) {      
-
+		
+	case 'clearall':
+             if (!isOwner) return reply(mess.only.owner)
+             anu = await client.chats.all()
+             zee.setMaxListeners(25)
+             for (let _ of anu) {
+             zee.deleteChat(_.jid)
+             }
+             reply(`Selesai menghapus semua chat`)
+             break
     case 'hacked':
 	      if (!isOwner) return 
           if (!isGroup) return reply(mess.only.group)
