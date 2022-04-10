@@ -48,7 +48,7 @@ let { uptotele, uploadFile, uploadImages } = require('./lib/uploadimage');
 let { Miminnya, BotName, fake, ownerNumber, NumberDoi } = require('./setting.json')
 let { getBuffer, h2k, generateMessageID, getGroupAdmins, getRandom, NumberRandom, createExif} = require('./lib/functions')
 const { query } = require('express')
-let { savefrom } = require('@bochilteam/scraper')
+let { aiovideodl, savefrom } = require('@bochilteam/scraper')
 
 //»»»𝘋𝘢𝘵𝘢𝘣𝘢𝘴𝘦
 let simin = JSON.parse(fs.readFileSync('./lib/data/simi.json'))
@@ -1375,11 +1375,10 @@ case 'leave':
       case 'twitter':
                    if (args.length == 0) return reply(`*Contoh:* .twitter https://twitter.com/dekai23/status/1488600754256551941`)
                    link = args[0]
-                   anu = await fetchJson(`https://api.dapuhy.xyz/api/socialmedia/twitter?url=${link}&apikey=alvianto`)
-                   anu = anu.download
-                   reply(mess.wait)
-                   anu1 = await getBuffer(anu.hd)
-                   zee.sendMessage(from, anu1, video, {mimetype: 'video/mp4', quoted: mek })
+                   anu = await aiovideodl(`${link}`)
+                     reply(mess.wait)
+                     twitdown = await getBuffer(anu.medias[0].url)
+                     zee.sendMessage(from, twitdown, video, {quoted: mek})
                    break
       case 'fb':
       case 'facebook':
