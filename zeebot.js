@@ -48,6 +48,7 @@ let { uptotele, uploadFile, uploadImages } = require('./lib/uploadimage');
 let { Miminnya, BotName, fake, ownerNumber, NumberDoi } = require('./setting.json')
 let { getBuffer, h2k, generateMessageID, getGroupAdmins, getRandom, NumberRandom, createExif} = require('./lib/functions')
 const { query } = require('express')
+let { aiovideodl, savefrom, instagramStory, instagramStoryv2 } = require('@bochilteam/scraper')
 
 //»»»𝘋𝘢𝘵𝘢𝘣𝘢𝘴𝘦
 let simin = JSON.parse(fs.readFileSync('./lib/data/simi.json'))
@@ -1375,6 +1376,7 @@ case 'leave':
                anu = await fetchJson(`http://hadi-api.herokuapp.com/api/tiktok?url=${args[0]}`)
                anu = anu.result
                anu1 = anu.audio_only
+               reply(mess.wait)
                anu2 = await getBuffer(anu1.original)
                zee.sendMessage(from, anu2, document, { mimetype: 'audio/mp3',filename: getRandom('.mp3'), quoted: mek })
 		  break
@@ -1384,6 +1386,7 @@ case 'leave':
                    link = args[0]
                    anu = await fetchJson(`https://api.dapuhy.xyz/api/socialmedia/twitter?url=${link}&apikey=alvianto`)
                    anu = anu.download
+                   reply(mess.wait)
                    anu1 = await getBuffer(anu.hd)
                    zee.sendMessage(from, anu1, video, {mimetype: 'video/mp4', quoted: mek })
                    break
@@ -1391,10 +1394,10 @@ case 'leave':
       case 'facebook':
                   if (args.length == 0) return reply(`*Contoh:* .fb https://www.facebook.com/groups/526925218448628/permalink/591475845326898/`)
                      link = args[0]
-                     anu = await fetchJson(`https://violetics.pw/api/downloader/facebook?apikey=bee1-117a-02c8&url=${link}`)
-                     anu = anu.result
-                     anu1 = await getBuffer(anu.url[0].url)
-                     zee.sendMessage(from, anu1, video, {quoted: mek})
+                     anu = await savefrom(`${link}`)
+                     reply(mess.wait)
+                     fbdown = await getBuffer(anu.url[0].url)
+                     zee.sendMessage(from, fbdown, video, {quoted: mek})
                      break
      case "instagram":
       case "ig":
@@ -1419,7 +1422,7 @@ case 'leave':
            }
            }
            });
-           break;		  		  
+           break;
     case 'mediafire':
           if (args.length < 1) return reply('Link Nya Mana? ')
           if(!isUrl(args[0]) && !args[0].includes('mediafire')) return reply(mess.error.Iv)
@@ -1436,8 +1439,8 @@ case 'leave':
           break
           case 'lirik':
          if (args.length == 0) return reply(`*Contoh:* .lirik Resah jadi luka`)
-         query = args.join(" ")
-         anu = await fetchJson(`https://hardianto.xyz/api/info/lirik?query=${query}&apikey=hardianto`)
+         cari = args.join(" ")
+         anu = await fetchJson(`https://hardianto.xyz/api/info/lirik?query=${cari}&apikey=hardianto`)
          ini_txt = `${anu.lirik}`
          thumb = await getBuffer(anu.thumb)
          zee.sendMessage(from, thumb, image, {caption: ini_txt, quoted: mek})
@@ -1601,12 +1604,13 @@ case 'cekresi':
 case 'igstalk':
             if (args.length == 0) return reply(`*Contoh:* .igstalk alvianto.17`)
             username = args.join(" ")
-            anu = await fetchJson(`https://hardianto.xyz/api/igstalk?username=${username}&apikey=hardianto`)
-            txt = `Username: ${anu.username}\n`
-            txt += `Fullname: ${anu.fullname}\n`
-            txt += `Bio: ${anu.bio}\n`
-            txt += `Followers: ${anu.followers}\n`
-            txt += `Following: ${anu.follow}\n`
+            anu = await fetchJson(`https://api-aquabot.herokuapp.com/other/igstalk?username=${username}&apikey=aquabot`)
+            anu = anu.result
+            txt = `Username: ${anu.Username}\n`
+            txt += `Fullname: ${anu.Fullname}\n`
+            txt += `Bio: ${anu.Biography}\n`
+            txt += `Followers: ${anu.Followers}\n`
+            txt += `Following: ${anu.Following}\n`
             txt += `Verified Account? Ngimpi awokawokawok\n\n`
             txt += `Link: https://www.instagram.com/${username}/?hl=id`
             anu1 = await getBuffer(anu.thumbnail)
