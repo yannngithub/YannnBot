@@ -528,15 +528,6 @@ switch (command) {
            { buttonId: `${prefix + command} ${v}`, buttonText: { displayText: 'NEXT' }, type: 1 }]
           sendButImage(from, `pinterest ${v}`, `Klik Next Ngab`, di, but)
           break
-    /*case 'lirik':
-          if (args.length < 1) return reply("Apa Yang Mau Di Cari? ")
-          reply(mess.wait)
-          teks = body.slice(7)
-          lirikLagu(teks).then((res) => {
-          let lirik = monospace(`❒「  SEARCH LIRIK  」\n└ Lirik Lagu :\n\n${res[0].result}\n`)
-          reply(lirik)
-          })
-          break*/
     case 'ytsearch':
           if (args.length < 1) return reply('Yang mau di cari apaan?')
           teks = args.join(' ')
