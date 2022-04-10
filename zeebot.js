@@ -48,7 +48,7 @@ let { uptotele, uploadFile, uploadImages } = require('./lib/uploadimage');
 let { Miminnya, BotName, fake, ownerNumber, NumberDoi } = require('./setting.json')
 let { getBuffer, h2k, generateMessageID, getGroupAdmins, getRandom, NumberRandom, createExif} = require('./lib/functions')
 const { query } = require('express')
-let { aiovideodl, savefrom, instagramStory, instagramStoryv2 } = require('@bochilteam/scraper')
+let { savefrom } = require('@bochilteam/scraper')
 
 //»»»𝘋𝘢𝘵𝘢𝘣𝘢𝘴𝘦
 let simin = JSON.parse(fs.readFileSync('./lib/data/simi.json'))
